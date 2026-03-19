@@ -1,44 +1,57 @@
 package com.weg.series.service;
 
+import com.weg.series.dto.requisicao.PlataformaRequisicao;
+import com.weg.series.dto.resposta.PlataformaResposta;
+import com.weg.series.mapper.PlataformaMapper;
 import com.weg.series.model.Plataforma;
 import com.weg.series.repository.PlataformaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class PlataformaService {
     private final PlataformaRepository repository;
+    private final PlataformaMapper mapper;
 
-    public Plataforma cadastrarPlataforma (Plataforma plataforma){
+    public PlataformaResposta cadastrarPlataforma (PlataformaRequisicao requisicao){
 
-        return repository.save(plataforma);
+        return mapper.resposta(repository.save(mapper.requisicao(requisicao)));
     }
 
-    public List<Plataforma> listarPlataformas (){
-        return repository.findAll();
+    public List<PlataformaResposta> listarPlataformas (){
+        List<Plataforma> plataformas = repository.findAll();
+        List<PlataformaResposta> plataformaR = new ArrayList<>();
+
+        plataformas.forEach(plataforma -> {
+            plataformaR.add(mapper.resposta(plataforma));
+        });
+
+
+        return plataformaR;
     }
 
-    public Plataforma buscarPlataformaPorId (int id){
+    public PlataformaResposta buscarPlataformaPorId (int id){
 
-        return repository.findById(id)
-                .orElseThrow(()-> new RuntimeException("Plataforma não encontrada!"));
+        return mapper.resposta(repository.findById(id)
+                .orElseThrow(()-> new RuntimeException("Plataforma não encontrada!")));
 
 
     }
 
-    public Plataforma atualizarPlataforma (int id, Plataforma plataforma){
+    public PlataformaResposta atualizarPlataforma (int id, PlataformaRequisicao requisicao){
 
         Plataforma plataformaSalva = repository.findById(id)
                 .orElseThrow(()-> new RuntimeException("Plataforma não encontrada!"));
 
-        plataformaSalva.setNome(plataforma.getNome());
-        plataformaSalva.setPaisOrigem(plataforma.getPaisOrigem());
-        plataformaSalva.setAnoCriacao(plataforma.getAnoCriacao());
+        plataformaSalva.setNome(requisicao.nome());
+        plataformaSalva.setPaisOrigem(requisicao.paisOrigem());
+        plataformaSalva.setAnoCriacao(requisicao.anoCriacao());
 
-        return repository.save(plataformaSalva);
+        return mapper.resposta(repository.save(plataformaSalva));
 
     }
 

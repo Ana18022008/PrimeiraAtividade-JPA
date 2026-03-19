@@ -1,5 +1,7 @@
 package com.weg.series.controller;
 
+import com.weg.series.dto.requisicao.PlataformaRequisicao;
+import com.weg.series.dto.resposta.PlataformaResposta;
 import com.weg.series.model.Plataforma;
 import com.weg.series.service.PlataformaService;
 import jakarta.validation.Valid;
@@ -16,23 +18,23 @@ public class PlataformaController {
     private final PlataformaService service;
 
     @PostMapping
-    public Plataforma cadastrarPlataforma (@Valid  @RequestBody Plataforma plataforma){
-        return service.cadastrarPlataforma(plataforma);
+    public PlataformaResposta cadastrarPlataforma (@Valid  @RequestBody PlataformaRequisicao requisicao){
+        return service.cadastrarPlataforma(requisicao);
     }
 
     @GetMapping
-    public List<Plataforma> listarPlataformas (){
+    public List<PlataformaResposta> listarPlataformas (){
         return service.listarPlataformas();
     }
 
     @GetMapping("/{id}")
-    public Plataforma buscarPlataformaPorId (@Valid @PathVariable  int id){
+    public PlataformaResposta buscarPlataformaPorId (@Valid @PathVariable  int id){
         return service.buscarPlataformaPorId(id);
     }
 
     @PutMapping("/{id}")
-    public Plataforma atualizarPlataforma (@Valid @PathVariable int id, @RequestBody Plataforma plataforma){
-        return service.atualizarPlataforma(id, plataforma);
+    public PlataformaResposta atualizarPlataforma (@Valid @PathVariable int id, @RequestBody PlataformaRequisicao requisicao){
+        return service.atualizarPlataforma(id, requisicao);
     }
 
     @DeleteMapping("/{id}")

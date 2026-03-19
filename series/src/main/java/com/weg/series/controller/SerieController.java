@@ -1,5 +1,7 @@
 package com.weg.series.controller;
 
+import com.weg.series.dto.requisicao.SerieRequisicao;
+import com.weg.series.dto.resposta.SerieResposta;
 import com.weg.series.model.Serie;
 import com.weg.series.service.SerieService;
 import jakarta.validation.Valid;
@@ -16,23 +18,23 @@ public class SerieController {
     private final SerieService service;
 
     @PostMapping
-    public Serie cadastrarSerie (@Valid  @RequestBody Serie serie){
-        return service.cadastrarSerie(serie);
+    public SerieResposta cadastrarSerie (@Valid  @RequestBody SerieRequisicao requisicao){
+        return service.cadastrarSerie(requisicao);
     }
 
     @GetMapping
-    public List<Serie> listarSeries (){
+    public List<SerieResposta> listarSeries (){
         return service.listarSeries();
     }
 
     @GetMapping ("/{id}")
-    public Serie buscarSeriePorId (@Valid @PathVariable int id){
+    public SerieResposta buscarSeriePorId (@Valid @PathVariable int id){
         return service.buscarSeriePorId(id);
     }
 
     @PutMapping ("/{id}")
-    public Serie atualizarSerie (@Valid @PathVariable int id, @RequestBody Serie serie){
-        return service.atualizarSerie(id, serie);
+    public SerieResposta atualizarSerie (@Valid @PathVariable int id, @RequestBody SerieRequisicao requisicao){
+        return service.atualizarSerie(id, requisicao);
     }
 
     @DeleteMapping ("/{id}")

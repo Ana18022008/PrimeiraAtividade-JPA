@@ -1,10 +1,14 @@
 package com.weg.series.service;
 
+import com.weg.series.dto.requisicao.PremioRequisicao;
+import com.weg.series.dto.resposta.PremioResposta;
+import com.weg.series.mapper.PremioMapper;
 import com.weg.series.model.Premio;
 import com.weg.series.repository.PremioRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -12,32 +16,40 @@ import java.util.List;
 public class PremioService {
 
     private final PremioRepository repository;
+    private final PremioMapper mapper;
 
-    public Premio cadastrarPremio (Premio premio){
+    public PremioResposta cadastrarPremio (PremioRequisicao requisicao){
 
-        return repository.save(premio);
+        return mapper.resposta(repository.save(mapper.requisicao(requisicao)));
 
     }
 
-    public List<Premio> listarPremios (){
-        return repository.findAll();
+    public List<PremioResposta> listarPremios (){
+       List<Premio> premios = repository.findAll();
+       List<PremioResposta> premiosR = new ArrayList<>();
+
+       premios.forEach(premio -> {
+           premiosR.add(mapper.resposta(premio));
+       });
+
+        return premiosR;
     }
 
-    public Premio buscarPremioPorId (int id){
-        return repository.findById(id)
-                .orElseThrow(()-> new RuntimeException("Prêmio não encontrado!"));
+    public PremioResposta buscarPremioPorId (int id){
+        return mapper.resposta(repository.findById(id)
+                .orElseThrow(()-> new RuntimeException("Prêmio não encontrado!")));
     }
 
-    public Premio atualizarPremioPorId (int id, Premio premio){
+    public PremioResposta atualizarPremioPorId (int id, PremioRequisicao requisicao){
 
         Premio premioSalvo = repository.findById(id)
                 .orElseThrow(()-> new RuntimeException("Prêmio não encontrado"));
 
-        premioSalvo.setNomePremio(premio.getNomePremio());
-        premioSalvo.setCategoria(premio.getCategoria());
-        premioSalvo.setAno(premio.getAno());
+        premioSalvo.setNomePremio(requisicao.nomePremio());
+        premioSalvo.setCategoria(requisicao.categoria());
+        premioSalvo.setAno(requisicao.ano());
 
-        return repository.save(premioSalvo);
+        return mapper.resposta(repository.save(premioSalvo));
     }
 
     public void excluirPremio (int id){

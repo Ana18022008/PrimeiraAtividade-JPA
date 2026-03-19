@@ -1,5 +1,7 @@
 package com.weg.series.controller;
 
+import com.weg.series.dto.requisicao.EpisodioRequisicao;
+import com.weg.series.dto.resposta.EpisodioResposta;
 import com.weg.series.model.Episodio;
 import com.weg.series.service.EpisodioService;
 import jakarta.validation.Valid;
@@ -17,23 +19,23 @@ public class EpisodioController {
 
 
     @PostMapping
-    public Episodio cadastrarEpisodio (@Valid @RequestBody Episodio episodio){
-        return service.criarEpisodio(episodio);
+    public EpisodioResposta cadastrarEpisodio (@Valid @RequestBody EpisodioRequisicao requisicao){
+        return service.criarEpisodio(requisicao);
     }
 
     @GetMapping
-    public List<Episodio> listarEpisodios (){
+    public List<EpisodioResposta> listarEpisodios (){
         return service.listarEpisodios();
     }
 
     @GetMapping("/{id}")
-    public Episodio buscarEpisodioPorId (@Valid @PathVariable int id){
+    public EpisodioResposta buscarEpisodioPorId (@Valid @PathVariable int id){
         return service.buscarEpisodioPorId(id);
     }
 
     @PutMapping("/{id}")
-    public Episodio atualizarEpisodio (@Valid @PathVariable int id, @RequestBody Episodio episodio){
-        return service.atualizarEpisodioPorId(id, episodio);
+    public EpisodioResposta atualizarEpisodio (@Valid @PathVariable int id, @RequestBody EpisodioRequisicao requisicao){
+        return service.atualizarEpisodioPorId(id, requisicao);
     }
 
     @DeleteMapping("/{id}")

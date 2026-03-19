@@ -1,5 +1,7 @@
 package com.weg.series.controller;
 
+import com.weg.series.dto.requisicao.PremioRequisicao;
+import com.weg.series.dto.resposta.PremioResposta;
 import com.weg.series.model.Premio;
 import com.weg.series.service.PremioService;
 import jakarta.validation.Valid;
@@ -16,23 +18,23 @@ public class PremioController {
     private final PremioService service;
 
     @PostMapping
-    public Premio cadastrarPremio (@Valid  @RequestBody Premio premio){
-        return service.cadastrarPremio(premio);
+    public PremioResposta cadastrarPremio (@Valid  @RequestBody PremioRequisicao requisicao){
+        return service.cadastrarPremio(requisicao);
     }
 
     @GetMapping
-    public List<Premio> listarPremios (){
+    public List<PremioResposta> listarPremios (){
         return service.listarPremios();
     }
 
     @GetMapping("/{id}")
-    public Premio buscarPremioPorId (@Valid @PathVariable int id){
+    public PremioResposta buscarPremioPorId (@Valid @PathVariable int id){
         return service.buscarPremioPorId(id);
     }
 
     @PutMapping("/{id}")
-    public Premio atualizarPremio (@Valid @PathVariable int id, @RequestBody Premio premio){
-        return service.atualizarPremioPorId(id, premio);
+    public PremioResposta atualizarPremio (@Valid @PathVariable int id, @RequestBody PremioRequisicao requisicao){
+        return service.atualizarPremioPorId(id, requisicao);
     }
 
     @DeleteMapping("/{id}")
